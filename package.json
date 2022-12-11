@@ -19,5 +19,8 @@
     "posttest": "npm run lint",
     "watch": "tsc -w",
     "dev": "ts-node ./src/index.js"
+  },
+  "dependencies": {
+    "xrpl": "^2.6.0"
   }
 }
