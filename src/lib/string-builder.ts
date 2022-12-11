@@ -1,15 +1,18 @@
 export default class StringBuilder {
   private t = '';
-  add(str: string) {
-    this.t += str;
+  add(str: string | number | string[]) {
+    this.#concatenate(str);
     return this;
   }
-  addIf(condition: Function | boolean, str: string) {
+
+  #concatenate(str: string | number | string[]) {
+    this.t += Array.isArray(str) ? str.join(' ') : str;
+  }
+
+  addIf(condition: Function | boolean, str: string | number | string[]) {
     const isBoolean = typeof condition === 'boolean';
     const shouldAdd = (isBoolean && condition) || (!isBoolean && condition());
-    if (shouldAdd) {
-      this.t += str;
-    }
+    shouldAdd && this.#concatenate(str);
     return this;
   }
   text() {
