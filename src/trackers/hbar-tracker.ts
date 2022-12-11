@@ -1,11 +1,5 @@
 import BaseTracker, {TrackerOptions} from './base-tracker';
-import {
-  Wallet,
-  LocalProvider,
-  AccountBalanceQuery,
-  Client,
-  AccountId,
-} from '@hashgraph/sdk';
+import {AccountBalanceQuery, Client} from '@hashgraph/sdk';
 import {AccountIdNotSet, GetBalanceError} from '../errors';
 
 export class HBARTracker extends BaseTracker {
@@ -24,7 +18,13 @@ export class HBARTracker extends BaseTracker {
     const client = Client.forMainnet();
     const query = new AccountBalanceQuery();
     query.setAccountId(this.options.accountId);
-    const accBalance = await query.execute(client);
-    return accBalance.hbars.toBigNumber().toString();
+    try {
+      const accBalance = await query.execute(client);
+      client.close();
+      return accBalance.hbars.toBigNumber().toString();
+    } catch (error: any) {
+      client.close();
+      throw new GetBalanceError(error.mesage, HBARTracker.name);
+    }
   }
 }
