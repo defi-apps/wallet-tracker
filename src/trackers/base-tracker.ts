@@ -1,4 +1,5 @@
 import {NotImplementedError} from '../errors';
+import StringBuilder from '../lib/string-builder';
 
 export type TrackerOptions = {
   host: string;
@@ -10,8 +11,18 @@ export type TrackerOptions = {
 export default class BaseTracker {
   options: TrackerOptions;
 
-  get url() {
-    return `${this.options.method}://${this.options.host}:${this.options.port}`;
+  get hasPort() {
+    return !!this.options.port;
+  }
+
+  get url(): string {
+    return new StringBuilder()
+      .add(this.options.method)
+      .add('://')
+      .add(this.options.host)
+      .addIf(this.hasPort, ':')
+      .addIf(this.hasPort, this.options.port)
+      .text();
   }
 
   constructor(options: TrackerOptions) {
