@@ -18,10 +18,6 @@ export default class BaseTracker {
     this.options = options;
   }
 
-  async subscribe() {
-    throw new NotImplementedError();
-  }
-
   async checkBalance(): Promise<string> {
     throw new NotImplementedError();
   }

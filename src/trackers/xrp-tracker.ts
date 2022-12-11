@@ -8,9 +8,7 @@ export class XRPTracker extends BaseTracker {
     super(options);
     this.client = new xrpl.Client(this.url, {});
   }
-  async subscribe(): Promise<void> {
-    console.log('XRP WALLET TRACKER');
-  }
+
   async checkBalance(): Promise<string> {
     return await this.getXRPBalance();
   }
