@@ -1,6 +1,7 @@
 {
   "name": "wallet-tracker",
   "version": "0.0.1",
+  "author": "ninode97",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^14.11.2",
