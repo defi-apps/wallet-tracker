@@ -21,3 +21,11 @@ export class GetBalanceError extends GeneralError {
     this.currency = currency;
   }
 }
+
+export class AccountIdNotSet extends GeneralError {
+  currency: string;
+  constructor(currency: string) {
+    super('Cannot create tracker, account_id not provided', 'ERR_3');
+    this.currency = currency;
+  }
+}

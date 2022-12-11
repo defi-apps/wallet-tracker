@@ -21,6 +21,7 @@
     "dev": "ts-node ./src/index.js"
   },
   "dependencies": {
+    "@hashgraph/sdk": "^2.19.0",
     "xrpl": "^2.6.0"
   }
 }

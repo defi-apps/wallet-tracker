@@ -6,6 +6,7 @@ export type TrackerOptions = {
   port: string;
   method: 'wss' | 'https';
   address: string;
+  accountId: string;
 };
 
 export default class BaseTracker {
