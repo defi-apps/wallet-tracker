@@ -22,9 +22,10 @@ export class HBARTracker extends BaseTracker {
       const accBalance = await query.execute(client);
       client.close();
       return accBalance.hbars.toBigNumber().toString();
-    } catch (error: any) {
+    } catch (error) {
+      const e = error as Error;
       client.close();
-      throw new GetBalanceError(error.mesage, HBARTracker.name);
+      throw new GetBalanceError(e.message, HBARTracker.name);
     }
   }
 }

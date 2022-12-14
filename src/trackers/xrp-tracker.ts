@@ -19,9 +19,10 @@ export class XRPTracker extends BaseTracker {
       const balance = await this.client.getXrpBalance(this.options.address);
       await this.client.disconnect();
       return balance;
-    } catch (error: any) {
+    } catch (error) {
+      const e = error as Error;
       await this.client.disconnect();
-      throw new GetBalanceError(error.message, 'XRP');
+      throw new GetBalanceError(e.message, 'XRP');
     }
   }
 }
