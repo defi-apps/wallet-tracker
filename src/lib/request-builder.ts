@@ -1,6 +1,10 @@
-import {InvalidRequestBodyError, InvalidRequestURLError} from '../errors';
+import {
+  InvalidRequestBodyError,
+  InvalidRequestURLError,
+  RequestBuilderError,
+} from '../errors';
 
-import axios from 'axios';
+import axios, {RawAxiosRequestHeaders} from 'axios';
 
 /**
  * RequestBuilder allows to easily build minimal requests fast
@@ -18,6 +22,7 @@ export class RequestBuilder {
 
   private _url = '';
   private _params = '';
+  private _headers: RawAxiosRequestHeaders = {};
   private opts: RequestOpts = {
     method: 'GET',
   };
@@ -30,6 +35,16 @@ export class RequestBuilder {
    */
   url(url: string) {
     this._url = url;
+    return this;
+  }
+
+  /**
+   * Sets header for request
+   * @param header
+   * @param value
+   */
+  header(header: string, value: string) {
+    this._headers[header] = value;
     return this;
   }
 
@@ -120,10 +135,16 @@ export class RequestBuilder {
       baseURL: this._url,
     });
 
-    const res = await instance.request<ResponseType>({
-      ...this.opts,
-      url: this.finalUrl,
-    });
-    return res.data;
+    try {
+      const res = await instance.request<ResponseType>({
+        ...this.opts,
+        url: this.finalUrl,
+        headers: this._headers,
+      });
+      return res.data;
+    } catch (error) {
+      const e = error as Error;
+      throw new RequestBuilderError(e.message);
+    }
   }
 }
