@@ -3,10 +3,9 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "build",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "target": "es6"
   },
-  "include": [
-    "src/**/*.ts",
-  ],
-  "exclude": ["node_modules","tests"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "tests"]
 }

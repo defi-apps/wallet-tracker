@@ -29,3 +29,15 @@ export class AccountIdNotSet extends GeneralError {
     this.currency = currency;
   }
 }
+
+export class InvalidRequestURLError extends GeneralError {
+  constructor() {
+    super('Invalid url', 'ERR_4');
+  }
+}
+
+export class InvalidRequestBodyError extends GeneralError {
+  constructor() {
+    super('Invalid payload', 'ERR_5');
+  }
+}
