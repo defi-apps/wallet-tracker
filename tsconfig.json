@@ -4,7 +4,7 @@
     "rootDir": ".",
     "outDir": "build",
     "esModuleInterop": true,
-    "target": "es6"
+    "target": "ESNext"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "tests"]

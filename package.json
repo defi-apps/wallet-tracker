@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@hashgraph/sdk": "^2.19.0",
-    "node-fetch": "^3.3.0",
+    "axios": "^1.2.1",
     "xrpl": "^2.6.0"
   }
 }

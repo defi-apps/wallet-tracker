@@ -1,16 +1,24 @@
-import fetch, {RequestInit} from 'node-fetch';
 import {InvalidRequestBodyError, InvalidRequestURLError} from '../errors';
+
+import axios from 'axios';
 
 /**
  * RequestBuilder allows to easily build minimal requests fast
  */
+
+type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type RequestOpts = {
+  method: RequestMethod;
+  data?: Object;
+};
 export class RequestBuilder {
   constructor() {
     return this;
   }
 
   private _url = '';
-  private fetchOpts: RequestInit = {
+  private _params = '';
+  private opts: RequestOpts = {
     method: 'GET',
   };
 
@@ -29,9 +37,9 @@ export class RequestBuilder {
    * Perform GET request
    * @returns
    */
-  async get() {
-    this.fetchOpts.method = 'GET';
-    return this.execute();
+  async get<ResponseType>() {
+    this.opts.method = 'GET';
+    return await this.execute<ResponseType>();
   }
 
   /**
@@ -39,8 +47,8 @@ export class RequestBuilder {
    * @returns
    */
   async post() {
-    this.fetchOpts.method = 'POST';
-    return this.execute();
+    this.opts.method = 'POST';
+    return await this.execute();
   }
 
   /**
@@ -48,8 +56,8 @@ export class RequestBuilder {
    * @returns
    */
   async put() {
-    this.fetchOpts.method = 'PUT';
-    return this.execute();
+    this.opts.method = 'PUT';
+    return await this.execute();
   }
 
   /**
@@ -57,8 +65,21 @@ export class RequestBuilder {
    * @returns
    */
   async delete() {
-    this.fetchOpts.method = 'DELETE';
-    return this.execute();
+    this.opts.method = 'DELETE';
+    return await this.execute();
+  }
+
+  /**
+   * Adds param into request string
+   * @param paramName
+   * @param paramValue
+   */
+  param(paramName: string, paramValue: string | number) {
+    this._params +=
+      this._params.length === 0
+        ? `?${paramName}=${paramValue}`
+        : `&${paramName}=${paramValue}`;
+    return this;
   }
 
   /**
@@ -73,25 +94,36 @@ export class RequestBuilder {
    * it must validated these type of request to ensure they are correct
    * @returns
    */
-  private validateBody() {
-    const isGet = this.fetchOpts.method !== 'GET';
-    const isDelete = this.fetchOpts.method !== 'DELETE';
+  private validateData() {
+    const isGet = this.opts.method !== 'GET';
+    const isDelete = this.opts.method !== 'DELETE';
     if (!isGet || !isDelete) {
       return;
     }
-    const isObj = typeof this.fetchOpts.body === 'object';
-    if (!isObj && !this.fetchOpts.body) throw new InvalidRequestBodyError();
+    const isObj = typeof this.opts.data === 'object';
+    if (!isObj && !this.opts.data) throw new InvalidRequestBodyError();
+  }
+
+  get finalUrl() {
+    return `${this._url}/${this._params}`;
   }
 
   /**
    * Executes request to target URL
    * @returns
    */
-  private async execute() {
+  private async execute<ResponseType>(): Promise<ResponseType> {
     this.validateURL();
-    this.validateBody();
+    this.validateData();
 
-    const opts: RequestInit = {};
-    return await fetch(this._url, opts);
+    const instance = axios.create({
+      baseURL: this._url,
+    });
+
+    const res = await instance.request<ResponseType>({
+      ...this.opts,
+      url: this.finalUrl,
+    });
+    return res.data;
   }
 }
