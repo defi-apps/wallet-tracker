@@ -38,6 +38,17 @@ export class RequestBuilder {
     return this;
   }
 
+  private sanitizeUrl(url: string) {
+    const endIndex = url.length - 1;
+    const hasTrailingSlash = url[endIndex] === '/';
+    const a = hasTrailingSlash ? url.slice(0, endIndex - 1) : url;
+    console.log({
+      url,
+      a,
+    });
+    return a;
+  }
+
   /**
    * Sets header for request
    * @param header
@@ -101,7 +112,7 @@ export class RequestBuilder {
    * URL must be validated, invalid URL will result in failure
    */
   private validateURL() {
-    if (!this.url) throw new InvalidRequestURLError();
+    if (!this._url) throw new InvalidRequestURLError();
   }
 
   /**
@@ -120,7 +131,7 @@ export class RequestBuilder {
   }
 
   get finalUrl() {
-    return `${this._url}/${this._params}`;
+    return `${this.sanitizeUrl(this._url)}${this._params}`;
   }
 
   /**
@@ -131,10 +142,8 @@ export class RequestBuilder {
     this.validateURL();
     this.validateData();
 
-    const instance = axios.create({
-      baseURL: this._url,
-    });
-
+    const instance = axios.create({});
+    console.log(this.finalUrl);
     try {
       const res = await instance.request<ResponseType>({
         ...this.opts,
@@ -144,6 +153,7 @@ export class RequestBuilder {
       return res.data;
     } catch (error) {
       const e = error as Error;
+      //console.log(e);
       throw new RequestBuilderError(e.message);
     }
   }

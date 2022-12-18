@@ -1,21 +1,14 @@
 import {NotImplementedError} from '../../../errors';
 
-export type ETHExplorerOptions = {};
-
 /**
  * Ethereum blockchain explorer base
  */
 export class ETHBaseExplorer {
-  private opts: ETHExplorerOptions;
-  constructor(opts: ETHBaseExplorer) {
-    this.opts = opts;
-  }
-
   /**
    * Get balance of eth address
    * @param address
    */
-  async getBalance(address: string) {
+  async getBalance(address: string): Promise<string> {
     throw new NotImplementedError();
   }
 
