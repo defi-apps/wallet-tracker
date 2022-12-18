@@ -1,5 +1,5 @@
 import BaseTracker, {TrackerOptions} from '../base-tracker';
-import {ETHBaseExplorer} from './explorers/eth-base.explorer';
+import {ETHBaseExplorer, ETHTokenBalance} from './explorers/eth-base.explorer';
 
 type ETHOptions = {
   explorer: ETHBaseExplorer;
@@ -15,5 +15,9 @@ export class ETHTracker extends BaseTracker {
 
   async checkBalance(): Promise<string> {
     return this.ethOpts.explorer.getBalance(this.options.address);
+  }
+
+  async checkTokenBalance(): Promise<ETHTokenBalance[]> {
+    return await this.ethOpts.explorer.getTokens(this.options.address);
   }
 }

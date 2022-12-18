@@ -1,5 +1,11 @@
 import {NotImplementedError} from '../../../errors';
 
+export type ETHTokenBalance = {
+  balance: string;
+  name: string;
+  symbol: string;
+};
+
 /**
  * Ethereum blockchain explorer base
  */
@@ -16,15 +22,7 @@ export class ETHBaseExplorer {
    * Get tokens of address
    * @param address
    */
-  async getTokens(address: string) {
-    throw new NotImplementedError();
-  }
-
-  /**
-   * Get balances of the tokens that is available for target address
-   * @param address
-   */
-  async getTokenBalances(address: string) {
+  async getTokens(address: string): Promise<ETHTokenBalance[]> {
     throw new NotImplementedError();
   }
 }
