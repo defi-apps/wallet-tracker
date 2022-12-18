@@ -41,3 +41,16 @@ export class InvalidRequestBodyError extends GeneralError {
     super('Invalid payload', 'ERR_5');
   }
 }
+
+export class APIKeyNotSetError extends GeneralError {
+  currency: string;
+  explorer: string;
+  constructor(currency: string, explorer: string) {
+    super(
+      `API key was not set, '${currency}' tracker requires API key in order to fetch ${explorer} data`,
+      'ERR_6'
+    );
+    this.currency = currency;
+    this.explorer = explorer;
+  }
+}
