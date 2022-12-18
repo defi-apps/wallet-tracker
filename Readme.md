@@ -6,18 +6,19 @@ The aim for this project is to have a unified way to request information such as
 
 ## Supported chains
 
-- Ethereum (-)
-  - Ethereum Tokens
+- Ethereum (+)
+  - Ethereum Tokens (+)
 - XDC (-)
 - Songbird (-)
 - XLM (-)
 - HBAR (+)
 - XRP (+)
-  - XRP tokens
+  - XRP tokens (-)
 
 ## Supported features
 
 - checkBalance() - get balance of a wallet / account.
+- price discovery
 
 ## To implement
 

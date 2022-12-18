@@ -58,6 +58,11 @@ export class BlockScoutExplorer extends ETHBaseExplorer {
     return data.result.map(this.mapToETHBalance);
   }
 
+  /**
+   * Map properties that only will be needed
+   * @param t
+   * @returns
+   */
   private mapToETHBalance(t: Token): ETHTokenBalance {
     const balance: ETHTokenBalance = {
       balance: ETHUnitConverter.toEther(Number(t.balance)).toString(),
@@ -67,6 +72,11 @@ export class BlockScoutExplorer extends ETHBaseExplorer {
     return balance;
   }
 
+  /**
+   * Handle request that was returned successful but failed at provider service
+   * @param status
+   * @param message
+   */
   private handleRequestError(status: string, message: string) {
     if (status === '0') {
       throw new BlockExplorerRequestError('eth', 'BlockScout', message);
