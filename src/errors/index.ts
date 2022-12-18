@@ -54,3 +54,30 @@ export class APIKeyNotSetError extends GeneralError {
     this.explorer = explorer;
   }
 }
+
+export class BlockExplorerRequestError extends GeneralError {
+  currency: string;
+  explorer: string;
+  reason: string;
+  constructor(currency: string, explorer: string, reason: string) {
+    super(
+      `Block explorer '${explorer}' for '${currency}' request failed, reason - '${reason}'`,
+      'ERR_7'
+    );
+    this.currency = currency;
+    this.explorer = explorer;
+    this.reason = reason;
+  }
+}
+
+export class InternalServerError extends GeneralError {
+  constructor(reason: string) {
+    super(reason, 'ERR_8');
+  }
+}
+
+export class RequestBuilderError extends GeneralError {
+  constructor(reason: string) {
+    super(reason, 'ERR_9');
+  }
+}
