@@ -8,10 +8,13 @@ type PriceTicker = {
   ask: number;
 };
 
+type SupportedExchanges = ccxt.binance | ccxt.kucoin;
+
 export class PriceDiscovery {
-  exchange: ccxt.binance;
-  constructor() {
-    this.exchange = new ccxt.binance();
+  exchange: SupportedExchanges;
+
+  constructor(exchange: SupportedExchanges) {
+    this.exchange = exchange;
   }
 
   async getTicker(symbol: string): Promise<PriceTicker> {
@@ -23,5 +26,17 @@ export class PriceDiscovery {
       ask: ticker.ask,
       bid: ticker.bid,
     };
+  }
+
+  static useBinance() {
+    const exchange = new ccxt.binance();
+    const instance = new PriceDiscovery(exchange);
+    return instance;
+  }
+
+  static useKucoin() {
+    const exchange = new ccxt.kucoin();
+    const instance = new PriceDiscovery(exchange);
+    return instance;
   }
 }
