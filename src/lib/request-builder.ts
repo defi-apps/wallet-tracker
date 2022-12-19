@@ -22,6 +22,7 @@ export class RequestBuilder {
 
   private _url = '';
   private _params = '';
+  private _sub = '';
   private _headers: RawAxiosRequestHeaders = {};
   private opts: RequestOpts = {
     method: 'GET',
@@ -40,13 +41,7 @@ export class RequestBuilder {
 
   private sanitizeUrl(url: string) {
     const endIndex = url.length - 1;
-    const hasTrailingSlash = url[endIndex] === '/';
-    const a = hasTrailingSlash ? url.slice(0, endIndex - 1) : url;
-    console.log({
-      url,
-      a,
-    });
-    return a;
+    return url.endsWith('/') ? url.slice(0, endIndex) : url;
   }
 
   /**
@@ -56,6 +51,25 @@ export class RequestBuilder {
    */
   header(header: string, value: string) {
     this._headers[header] = value;
+    return this;
+  }
+
+  /**
+   * Extend base path with resource
+   * @param name
+   * @returns
+   */
+  resource(name: string) {
+    this._sub += !this._sub ? name : `/${name}`;
+    return this;
+  }
+
+  /**
+   * Extend base path with param
+   * @param value
+   */
+  param(value: string | number) {
+    this._sub += this._sub.endsWith('/') ? value : `/${value}`;
     return this;
   }
 
@@ -96,11 +110,11 @@ export class RequestBuilder {
   }
 
   /**
-   * Adds param into request string
+   * Adds query into request string
    * @param paramName
    * @param paramValue
    */
-  param(paramName: string, paramValue: string | number) {
+  query(paramName: string, paramValue: string | number) {
     this._params +=
       this._params.length === 0
         ? `?${paramName}=${paramValue}`
@@ -131,7 +145,10 @@ export class RequestBuilder {
   }
 
   get finalUrl() {
-    return `${this.sanitizeUrl(this._url)}${this._params}`;
+    const e1 = this.sanitizeUrl(this._url);
+    const e2 = this.sanitizeUrl(this._sub);
+    const e3 = this.sanitizeUrl(`${e1}/${e2}`);
+    return `${e3}${this._params}`;
   }
 
   /**
@@ -143,7 +160,6 @@ export class RequestBuilder {
     this.validateData();
 
     const instance = axios.create({});
-    console.log(this.finalUrl);
     try {
       const res = await instance.request<ResponseType>({
         ...this.opts,
@@ -153,7 +169,6 @@ export class RequestBuilder {
       return res.data;
     } catch (error) {
       const e = error as Error;
-      //console.log(e);
       throw new RequestBuilderError(e.message);
     }
   }

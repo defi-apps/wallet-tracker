@@ -35,9 +35,9 @@ export class BlockScoutExplorer extends ETHBaseExplorer {
   async getBalance(address: string): Promise<string> {
     const data = await new RequestBuilder()
       .url(this.endpoint)
-      .param('module', 'account')
-      .param('action', 'balance')
-      .param('address', address)
+      .query('module', 'account')
+      .query('action', 'balance')
+      .query('address', address)
       .get<BalanceResponse>();
 
     this.handleRequestError(data.status, data.message);
@@ -49,9 +49,9 @@ export class BlockScoutExplorer extends ETHBaseExplorer {
   async getTokens(address: string): Promise<ETHTokenBalance[]> {
     const data = await new RequestBuilder()
       .url(this.endpoint)
-      .param('module', 'account')
-      .param('action', 'tokenlist')
-      .param('address', address)
+      .query('module', 'account')
+      .query('action', 'tokenlist')
+      .query('address', address)
       .get<TokenListResponse>();
 
     this.handleRequestError(data.status, data.message);
