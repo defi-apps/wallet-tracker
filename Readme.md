@@ -24,3 +24,7 @@ The aim for this project is to have a unified way to request information such as
 
 - getTransactions() - get transactions of a wallet
 - code examples
+
+## All Trackers should implement Health-Checks
+
+- Encountered issue when XDC API went down...
