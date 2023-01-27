@@ -6,6 +6,7 @@ The aim for this project is to have a unified way to request information such as
 
 ## Supported chains
 
+- BTC (-)
 - Ethereum (+)
   - Ethereum Tokens (+)
 - XDC (-)
@@ -28,3 +29,13 @@ The aim for this project is to have a unified way to request information such as
 ## All Trackers should implement Health-Checks
 
 - Encountered issue when XDC API went down...
+
+# Start
+
+```
+nodemon ./src/dev.ts
+```
+
+## Todo
+
+- Fix BTC Unit converter

@@ -40,6 +40,9 @@ export class BlockScoutExplorer extends ETHBaseExplorer {
       .query('address', address)
       .get<BalanceResponse>();
 
+    console.log({
+      balances: data,
+    });
     this.handleRequestError(data.status, data.message);
 
     const wei = Number(data.result);
@@ -53,6 +56,10 @@ export class BlockScoutExplorer extends ETHBaseExplorer {
       .query('action', 'tokenlist')
       .query('address', address)
       .get<TokenListResponse>();
+
+    console.log({
+      tokens: data,
+    });
 
     this.handleRequestError(data.status, data.message);
     return data.result.map(this.mapToETHBalance);
