@@ -1,4 +1,5 @@
 import {RequestBuilder} from '../../../lib/request-builder';
+import BTCUnitConverter from '../btc-unit-converter';
 import {BTCBaseExplorer} from './btc-base.explorer';
 
 type BalanceResponse = {
@@ -25,7 +26,12 @@ export class BlockchainComExplorer extends BTCBaseExplorer {
       .query('active', address)
       .header('Accept-Encoding', '*')
       .get<BalanceResponse>();
-
-    return data[address].final_balance.toString();
+    const balance = data[address].final_balance;
+    const num = BTCUnitConverter.toBitcoin(balance);
+    console.log({
+      balance,
+      num,
+    });
+    return num.toString();
   }
 }
